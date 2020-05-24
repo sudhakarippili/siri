@@ -1,0 +1,129 @@
+<head>
+<style type="text/css">
+	.divContainer{
+		width: 50%;   		
+	}
+	.heading{
+		width: 50%;   		
+	}
+    form{
+        margin: 20px 0;
+    }
+    form input, button{
+        padding: 5px;
+    }
+   
+   .Table
+    {
+        display: table;
+    }
+    .Title
+    {
+        display: table-caption;
+        text-align: center;
+        font-weight: bold;
+        font-size: larger;
+    }
+    .Heading
+    {
+        display: table-row;
+        font-weight: bold;
+        text-align: center;
+    }
+    .Row
+    {
+        display: table-row;
+    }
+    .Cell
+    {
+        display: table-cell;
+        border: solid;
+        border-width: thin;
+        padding-left: 7px;
+        padding-right: 7px;
+		padding-top: 7px;
+        padding-bottom: 7px;
+		font-size: 50px;
+    }
+	.ans
+	{
+		border-width: thin;
+        padding-left: 5px;
+        padding-right: 5px;
+		font-size: 50px;
+		max-width: 60px;
+	}
+	.selectwrap 
+{
+   overflow: auto;
+   max-height: 50px;
+}
+</style>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script>
+	function randomNumer(min, max) {  
+    return Math.floor(Math.random() * (max - min) + min);
+	}
+	 $(document).ready(function(){ 
+		
+    });  
+
+	function generateQuizSheet(operationType){
+	var marker ="";
+	for(var i=0;i<10;i++){
+    	
+		marker = marker +"<div class='Row'>";
+		if(operationType=="add"){
+			marker = marker + getAddQuestion();
+		}
+		if(operationType=="sub"){
+			marker = marker + getSubQuestion();
+		}
+		if(operationType=="mul"){
+			marker = marker + getMulQuestion();
+		}
+		marker = marker + "</div>";		
+	}
+		marker = marker +"<button onClick='submitAnswer()' style = 'font-size: 40px;'>Submit</button>";
+		$(".quizSheet").html(marker);
+	}
+	
+	function getAddQuestion(){    	
+		return "<div class='Cell question'>"+randomNumer(1,10)+"+"+randomNumer(1,10) +"= </div><div class='Cell'><input type='text' pattern='\d*' class='ans' id='ans'></div>";		
+	}	
+	function getSubQuestion(){	
+		var maxValue=randomNumer(1,10)
+		return "<div class='Cell question'>"+maxValue+"-"+randomNumer(1,maxValue) +"= </div><div class='Cell'><input type='text' pattern='\d*' class='ans' id='ans'></div>";
+		
+	}	
+	function getMulQuestion(){	
+		var maxValue=randomNumer(1,10)
+		return "<div class='Cell question'>"+maxValue+"*"+randomNumer(1,10) +"= </div><div class='Cell'><input type='text' pattern='\d*' class='ans' id='ans'></div>";		
+	}
+	function submitAnswer(){
+	var count = 0;
+		$(".quizSheet").find(".Row").each(function(){
+			var question = ($(this).find(".question").html());
+			var answer = ($(this).find(".ans").val());
+			question = question.replace("=","");
+			console.log("question :: "+question+"  ::  "+eval(question) + " :: "+answer);
+			if(eval(question) == answer){
+			count++;
+			}
+		});
+		alert(count);
+	}
+	
+</script>
+</head>
+
+<div class="quizpage">
+	<button  onClick="generateQuizSheet('add')"  style = 'font-size: 40px;'>Add</button>
+	<button  onClick="generateQuizSheet('sub')" style = 'font-size: 40px;'>Subtract</button>
+	<button  onClick="generateQuizSheet('mul')" style = 'font-size: 40px;'>multiply</button>
+	<div class="quizSheet"></div>
+</div>	
+
+
+
+	
